@@ -1,6 +1,3 @@
-
-
-
 import time
 import tweepy
 import numpy as np
@@ -12,12 +9,10 @@ def generate_random_userID(maxi, size):
     return sample_id
 
 def grap_the_existent_users(sample_id_lst):
-
-    
-    consumer_key2 = 'wWIWOq725XvDhfd7i6zbrImuN'
-    consumer_secret2 = '7h9M7FZVhriCGqtk8NwhFWeK5Y8Rw0qkt9iWJTK95v3H4AmJcf'
-    access_key2 = '840078082019020800-ZnEnAr9vwAqMc7bp3RklGfGXgfbDqmk'
-    access_secret2 = 'ffYx7fbgSfAiIbVbexomN3cyQj1QI9oDZObPya4FJ5L1l'
+    consumer_key2 = #<--add-->
+    consumer_secret2 =  #<--add-->
+    access_key2 =  #<--add-->
+    access_secret2 =  #<--add-->
 
     auth = tweepy.OAuthHandler(consumer_key2, consumer_secret2)
     auth.set_access_token(access_key2, access_secret2)
