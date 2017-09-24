@@ -1,16 +1,14 @@
-
-
-
 import time
 import tweepy
 import numpy as np
 import csv
 
-
+#Generate random number
 def generate_random_userID(maxi, size):
     sample_id = np.random.randint(1, high= maxi, size = size)
     return sample_id
 
+#Get information from a valid user, or return NAN for a non-existed user
 def grap_the_existent_users(sample_id_lst):
 
     consumer_key = #<--add --> 
@@ -46,6 +44,14 @@ def grap_the_existent_users(sample_id_lst):
             time.sleep(600)
         else:
             try:
+                # api.get_user
+                
+                '''api.get_user Returns information about the specified user.
+                Parameters:	
+                id – Specifies the ID or screen name of the user.
+                user_id – Specifies the ID of the user.
+                screen_name – Specifies the screen name of the user.
+                '''
                 users_list = api.get_user(i)
                 screen_name.append(users_list.screen_name)
                 name.append((users_list.name).encode('utf8'))
