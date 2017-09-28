@@ -16,6 +16,9 @@
 - cPickle
 - pymongo
 - flask
+- SMOTE The raw dataset is imbalanced. Hence, the SMOTE algorithm is used to balance the datasets.
+http://contrib.scikit-learn.org/imbalanced-learn 
+
 
 ### Diagram of work flow 
 ![App Architecture](https://github.com/margaretnym/event-fraud-detection/blob/master/images/fraud_detection.png)
@@ -28,8 +31,8 @@
 ## Feature engineering
 
 #### Feature Picked up & its importance
-Features Picked | Description |Feature Importance
------------- | ------------- | -------------
+Category | Feature |Description | Feature Importance
+------------ | ------------- | -------------| -------------
 body_length|                  |0.38
 have_previous_payouts||0.21
 payout_type_|NAN for payout_type|0.08
@@ -44,6 +47,10 @@ cap_name|If name is all in captial case                     |0.02
 payout_type_ACH|ACH for payout_type              |0.02
 
 ## Model picked
+Models experiemented: Logistic Regression, Decision Trees, Gradient Boosting. 
+All models are trained using 10-foldcross validation.
+
+The final supervised classification model used is the Gradient Boosting Classifier.
 ```python
 GradientBoostingClassifier(criterion='friedman_mse', init=None,
                learning_rate=0.1, loss='deviance', max_depth=4,
