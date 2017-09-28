@@ -103,5 +103,7 @@ def grap_the_existent_users(sample_id_lst):
                             profile_background_image_url_https))
     
 if __name__ == "__main__":
+    # Twitter Id 4915953956 (10 digits) is a user joined Twitter on Joined February 2016
+    # Twitter ID is generated using Snowflake https://github.com/twitter/snowflake/tree/snowflake-2010, User id is (Roughly) Time Ordered
     sample_id = generate_random_userID(maxi = 4915953956, size = 50000)
     grap_the_existent_users(sample_id)
