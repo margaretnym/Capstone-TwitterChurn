@@ -60,4 +60,25 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
                n_estimators=100, presort='auto', random_state=None,
                subsample=1.0, verbose=0, warm_start=False)
 ```
-## Topic Modeling - Visualizations¶
+## Visualizing topic models with pyLDAvis
+
+
+Wait, what am I looking at again?
+
+There are a lot of moving parts in the visualization. Here's a brief summary:
+
+On the left, there is a plot of the "distance" between all of the topics (labeled as the Intertopic Distance Map)
+- The plot is rendered in two dimensions according a multidimensional scaling (MDS) algorithm. Topics that are generally similar should be appear close together on the plot, while dissimilar topics should appear far apart.
+- The relative size of a topic's circle in the plot corresponds to the relative frequency of the topic in the corpus.
+- An individual topic may be selected for closer scrutiny by clicking on its circle, or entering its number in the "selected topic" box in the upper-left.
+
+On the right, there is a bar chart showing top terms.
+- When no topic is selected in the plot on the left, the bar chart shows the top-30 most "salient" terms in the corpus. A term's saliency is a measure of both how frequent the term is in the corpus and how "distinctive" it is in distinguishing between different topics.
+- When a particular topic is selected, the bar chart changes to show the top-30 most "relevant" terms for the selected topic. The relevance metric is controlled by the parameter $\lambda$, which can be adjusted with a slider above the bar chart.
+- Setting the $\lambda$ parameter close to 1.0 (the default) will rank the terms solely according to their probability within the topic.
+- Setting $\lambda$ close to 0.0 will rank the terms solely according to their "distinctiveness" or "exclusivity" within the topic — i.e., terms that occur only in this topic, and do not occur in other topics.
+- Setting $\lambda$ to values between 0.0 and 1.0 will result in an intermediate ranking, weighting term probability and exclusivity accordingly.
+- Rolling the mouse over a term in the bar chart on the right will cause the topic circles to resize in the plot on the left, to show the strength of the relationship between the topics and the selected term.
+
+A more detailed explanation of the pyLDAvis visualization can be found here. Unfortunately, though the data used by gensim and pyLDAvis are the same, they don't use the same ID numbers for topics. If you need to match up topics in gensim's LdaMulticore object and pyLDAvis' visualization, you have to dig through the terms manually.
+
