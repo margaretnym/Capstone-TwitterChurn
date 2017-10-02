@@ -2,6 +2,7 @@
 
 
 ## Propose
+Understanding what keeps social media users engaged is a foundation to develop retention strategies to keep users from walking out the door. This capstone project defines Twitter users who have churned, their important features, and what they said in their last tweets.
 
 ### Main Infrastructure
 - MongoDB
