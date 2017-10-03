@@ -1,169 +1,197 @@
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 import numpy as np
-from datetime import datetime
-import csv
 
-def created_date_til_today(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    created_timestramp =  pd.to_datetime(df['created_date'], infer_datetime_format=True)
-    timeuntil = datetime.strptime('2017-07-19 00:00:00', '%Y-%m-%d %H:%M:%S')
-    days_between = (timeuntil - created_timestramp)
-    days = days_between.values.astype('timedelta64[D]')
-    return days / np.timedelta64(1, 'D')
+from numpy import sort
 
-def locationY_N(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    if df['location'].values[0] == "NaN":
-        return False
-    else:
-        return True
+import cPickle as pickle
 
-def descriptionY_N(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    if df['description'].values[0] == "NaN":
-        return False
-    else:
-        return True
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.feature_selection import SelectFromModel
+from sklearn.grid_search import GridSearchCV
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import roc_curve, auc, accuracy_score, recall_score, f1_score, precision_score
 
-def statuses_fav_count_by_lifespan(person_screen_name):
-    df_tweet = df_alltweets[df_alltweets['screen_name'] == person_screen_name].tail(1)
-    last_tweets_timestramp = pd.to_datetime(df_tweet['created_at'], infer_datetime_format=True)
-    df_people = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    created_timestramp =  pd.to_datetime(df_people['created_date'], infer_datetime_format=True)
+
+from imblearn.combine import SMOTEENN 
+from collections import Counter
+
+import matplotlib.pyplot as plt
+# %matplotlib inline 
+import matplotlib
+matplotlib.style.use('ggplot')
+
+def feature_engineering():
     
-    days_between = last_tweets_timestramp.values[0] - created_timestramp.values[0]
-    days = days_between.astype('timedelta64[D]')
-    lifespan =  days / np.timedelta64(1, 'D')
-    
-    status_lifespan = df_people.statuses_count.values[0]/float(lifespan+0.1)
-    fav_lifespan = df_people.favorites.values[0]/float(lifespan+0.01)
-    
-    return status_lifespan, fav_lifespan
+    df_features = pd.read_csv('/Users/margaretnym/Desktop/Galvanize Data Science/Capstone/feature_engineering/data/combo_features.csv')
+    df_delta_churn = pd.read_csv('/Users/margaretnym/Desktop/Galvanize Data Science/Capstone/df_delta.csv')
+    df = pd.merge(left=df_features,right=df_delta_churn, left_on='screen_name', right_on='screen_name')
 
-def verifiedY_N(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    if df['verified'].values[0]:
-        return True
+    df.fillna(0, inplace=True)
+    df= pd.get_dummies(df, columns=['source'])
+    df['verified'] = df.verified.apply(lambda x: 0 if x =="False" else 1)
+    df['profile'] = df.profile.apply(lambda x: 0 if x =="False" else 1)
+    df['churn_mean'] = df.churn_mean.apply(lambda x: 0 if x =="no" else 1)
+
+
+    X_col = df[[u'created_date_til_today', u'status_lifespan',
+       u'fav_lifespan', u'friends_count', u'ollowers_count',
+       u'ratio', u'avg_len', u'retweet_ratio', u'org_fav',
+       u'org_retweet', u'org_hastages', u'org_mentions', u'org_url',
+       u'org_media_type']]
+    y_col = df['churn_mean']
+
+    X = np.array(X_col)
+    y = np.array(y_col)
+
+    return X,y
+
+
+def parameter_tuning(X_train,y_train):   
+    param_grid = {'n_estimators':[10, 100, 1000],
+                  'max_depth': [4, 6], 
+                  'max_features': ['auto', 'sqrt', 'log2']}
+
+    
+    gb_model = GradientBoostingClassifier()
+    gb_cv = GridSearchCV(gb_model, param_grid, n_jobs=-1,verbose=True, cv=2).fit(X_train,y_train)  
+    
+    rf_model = RandomForestClassifier()
+    rf_cv = GridSearchCV(rf_model, param_grid, n_jobs=-1,verbose=True, cv=2).fit(X_train,y_train)  
+    
+    Cs = np.logspace(-4, 4, 3)
+    param_grid2 = {'penalty':['l1', 'l2'], 'C':Cs}
+    
+    log_model = LogisticRegression()
+    log_cv = GridSearchCV(log_model, param_grid2, n_jobs=-1,verbose=True, cv=2).fit(X_train,y_train)  
+               
+               
+    if (gb_cv.best_score_ > rf_cv.best_score_) and (gb_cv.best_score_ > log_cv.best_score_) :
+        best_model = gb_cv.best_estimator_
+    elif (rf_cv.best_estimator_ > gb_cv.best_score_) and (rf_cv.best_estimator_ > log_cv.best_score_):
+        best_model = rf_cv.best_estimator_
     else:
-        return False
-
-def friends_followers_follower_friend_ratio(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    ratio = df['followers'].values[0]/(df['friends'].values[0] + 0.01) * 1.0
-    return df['friends'].values[0], df['followers'].values[0], ratio
-
-
-def profilepicY_N(person_screen_name):
-    df = df_allpeople[df_allpeople['screen_name'] == person_screen_name]
-    if df['profilepic'].values[0] == 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png':
-        return False
-    else:
-        return True
-
-def average_len(person_screen_name):
-    list_of_len = []
-    df = df_alltweets[df_alltweets['screen_name'] == person_screen_name]
-    for i in xrange(df.shape[0]):
-        list_of_len.append(len(df.iloc[i]['text']))       
-    print person_screen_name
-    mean = np.mean(list_of_len)
-    return mean
-
-def retweet_ratio(person_screen_name):
-    count_retweet = 0
-    df = df_alltweets[df_alltweets['screen_name'] == person_screen_name]
-    for i in xrange(df.shape[0]):
-        if df.iloc[i]['retweet']:
-            count_retweet += 1
-    return count_retweet/float(df.shape[0]+ 0.01)
-
-def orginal_favorite_retweet_hastages_mention_url_media_count(person_screen_name):
-    df = df_alltweets[df_alltweets['screen_name'] == person_screen_name]
-    df = df[df['retweet']!= True]
-    sum_fav, sum_retweet,sum_hastages, sum_mentions, sum_url, sum_media_type  = 0, 0, 0, 0, 0, 0
-    
-    for i in xrange(df.shape[0]):
+        best_model = log_cv.best_estimator_
         
-        if df['favorite_count'].iloc[i] != 0 and df['retweet'].iloc[i] != True:
-            sum_fav += 1 
-            
-        if df['retweet_count'].iloc[i] != 0 and df['retweet'].iloc[i] != True:
-            sum_retweet += 1
-
-        if df['hastages_count'].iloc[i] != 0 and df['retweet'].iloc[i] != True:
-            sum_hastages += 1
-        
-        if df['mentions_count'].iloc[i] != 0 and df['retweet'].iloc[i] != True:
-            sum_mentions += 1
+    print str(gb_cv.best_estimator_), str(gb_cv.best_score_)
+    print str(rf_cv.best_estimator_), str(rf_cv.best_score_)
+    print str(log_cv.best_estimator_), str(log_cv.best_score_)
     
-        if df['urls'].iloc[i] != "NAN" and df['retweet'].iloc[i] != True:
-            sum_url += 1
-    
-        if df['media_type'].iloc[i] != "NAN" and df['retweet'].iloc[i] != True:
-            sum_media_type += 1
-    
-    return sum_fav/float(df.shape[0] + 0.01), sum_retweet/float(df.shape[0]+ 0.01), sum_hastages/float(df.shape[0]+ 0.01), \
-     sum_mentions/float(df.shape[0]+ 0.01), sum_url/float(df.shape[0]+ 0.01), sum_media_type/float(df.shape[0]+ 0.01)
-
-def freq_source_group(person_screen_name):
-    app_list = ['Twitter for iPhone','Twitter for Android', 'Twitter for  Android', 'Twitter for BlackBerry®', 'Mobile Web (M2)',
-                'iOS' ,'Twitter for iPad','UberSocial for BlackBerry', 'Twitter Lite', 'Echofon','TweetCaster for Android' , 
-                'Twitter for Windows Phone', 'Mobile Web', 'iOS', 'Foursquare', 'Path']
-    computer_list = ['Twitter Web Client', 'TweetDeck','twitterfeed', 'Twitter for Websites', 'Google', 'Hootsuite']
-    soialmedia = ['Facebook','Tumblr', 'Instagram']
-    bot = ['twittbot.net', 'Tweetbot for iΟS', 'Twittascope']
-    
-    app_list_counts, computer_list_counts, soialmedia_counts, bot_counts, other_counts = 0,0,0,0,0
+    score = np.mean(cross_val_score(best_model, X_train, y_train ,cv=2))
+    print 'training score: {}' .format(score)
+    recall = np.mean(cross_val_score(best_model, X_train, y_train,cv=2, scoring='recall'))
+    print 'training recall: {}' .format(recall)
+    precision = np.mean(cross_val_score(best_model, X_train, y_train,cv=2, scoring='precision'))
+    print 'training precision: {}' .format(recall)
+    f1_score = np.mean(cross_val_score(best_model, X_train, y_train,cv=2, verbose=True, scoring="f1"))
+    print 'training F1-score: {}' .format(f1_score)
     
     
-    df = df_alltweets[df_alltweets['screen_name'] == person_screen_name]
-    if df['source'].values[0] in app_list:
-        app_list_counts += 1
-    elif df['source'].values[0] in computer_list:
-        computer_list_counts += 1
-    elif df['source'].values[0] in soialmedia:
-        soialmedia_counts += 1
-    elif df['source'].values[0] in bot:
-        bot_counts += 1
-    else:
-        other_counts += 1
-    
-    d = {'app': app_list_counts, 'computer': computer_list_counts, 'social_media': soialmedia_counts, 'bot': bot_counts, 'other': other_counts}
-    return max(d, key=d.get)
+    return best_model
 
 
-def features_print_out():    
-    count = 0
-    for i in df_alltweets['screen_name'].unique():
-        count +=1 
-        print str(count) + " " + str(i)
+def balance_class(X,y):
+    sm = SMOTEENN()
+    X_resampled, y_resampled = sm.fit_sample(X, y)
+    print('Original dataset shape {}'.format(Counter(y)))
+    print('Resampled dataset shape {}'.format(Counter(y_resampled)))
+    return X_resampled, y_resampled
+
+def plot_ROC_curve(fpr, tpr) :
+    # Compute ROC curve and ROC area for each class
+    roc_auc = auc(fpr, tpr)
+
+    plt.figure(figsize=(5,5))
+    lw = 2
+    plt.plot(fpr, tpr, color='darkorange',
+         lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver operating characteristic example')
+    plt.legend(loc="lower right")
+    plt.savefig('ROC.svg', format='svg', dpi=400)
+    plt.show()
+
+def check_feature_importance(model, X_train, X_test, y_train, y_test):
+    y_pred = model.predict(X_test)
+    predictions = [round(value) for value in y_pred]
+    accuracy = accuracy_score(y_test, predictions)
+    print("Accuracy: %.2f%%" % (accuracy * 100.0))
+    # Fit model using each importance as a threshold
     
-        created_date_since_today_ = created_date_til_today(i)
-        location_ = locationY_N(i)
-        description_ =  descriptionY_N(i)
-        status_lifespan_, fav_lifespan_ = statuses_fav_count_by_lifespan(i)
-        verified_ = verifiedY_N(i)
-        friends_count_, followers_count_ , ratio = friends_followers_follower_friend_ratio(i)
-        profile_ = profilepicY_N(i)
-        avg_len_ = average_len(i)
-        retweet_ratio_ = retweet_ratio(i)
-        org_fav_, org_retweet_,org_hastages_ ,org_mentions_ ,org_url_ ,org_media_type_ = orginal_favorite_retweet_hastages_mention_url_media_count(i)
-        source_ = freq_source_group(i)
+    feature_names = [u'created_date_til_today', u'status_lifespan', \
+                 u'fav_lifespan',  u'friends_count', u'ollowers_count',\
+                 u'ratio', u'avg_len', u'retweet_ratio', u'org_fav',\
+                 u'org_retweet', u'org_hastages', u'org_mentions', u'org_url',\
+                 u'org_media_type']
 
+    dict_feature = {x:y for x,y in zip(feature_names, best_model.feature_importances_)}
     
-        list_to_print = [i,created_date_since_today_,location_, status_lifespan_, fav_lifespan_, verified_, friends_count_, followers_count_, ratio,\
-                        profile_, avg_len_, retweet_ratio_, org_fav_, org_retweet_,org_hastages_ ,org_mentions_ ,org_url_ ,org_media_type_, \
-                        source_]
+    thresholds = sort(best_model.feature_importances_)
+
+
+    for thresh in thresholds:
+        # select features using threshold
+        selection = SelectFromModel(best_model, threshold=thresh, prefit=True)
+        select_X_train = selection.transform(X_train)
+        # train model
+        selection_model = GradientBoostingClassifier()
+        selection_model.fit(select_X_train, y_train)
+        # eval model
+        select_X_test = selection.transform(X_test)
+        y_pred = selection_model.predict(select_X_test)
+        predictions = [round(value) for value in y_pred]
+        accuracy = accuracy_score(y_test, predictions)
+
+        for f_name, f_val in dict_feature.iteritems():
+            if f_val == thresh:
+                name = f_name     
+                print "Thresh=%.3f, n=%d, name = %s, Accuracy: %.2f%%" % (thresh, select_X_train.shape[1], name, accuracy*100.0)
+                print "******"
+
+def score_best_models(X,y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.3)
+    best_model = parameter_tuning(X_train,y_train)    
     
-        with open('features3.csv', 'a') as f1:
-            writer = csv.writer(f1)
-            writer.writerow(list_to_print)
+    #Evaluate the model
+    #print 'Best score:', best_model.score(X_test, y_test)  #accuracy
+    print 'Test-set Accuracy:', accuracy_score(y_test,best_model.predict(X_test))
+    print 'Test-set Recall:', recall_score(y_test,best_model.predict(X_test))
+    print 'Test-set Precision:', precision_score(y_test,best_model.predict(X_test))
+    print 'Test-set F-1 Score:', f1_score(y_test,best_model.predict(X_test))
 
-if __name__ == "__main__":   
-    df_allpeople = pd.read_csv('all_user_list.csv', error_bad_lines=False)
-    df_alltweets  = pd.read_csv('combo.csv', error_bad_lines=False )
-    features_print_out()
+    y_score = best_model.predict_proba(X_test)
 
+    fpr,tpr, threshold = roc_curve(y_test,y_score[:,1])
+    plot_ROC_curve(fpr, tpr)
 
+    return best_model, X_train, X_test, y_train, y_test
+
+def plot_feature_importance(model):
+    feature_importance = best_model.feature_importances_
+    # make importances relative to max importance
+    feature_importance = 100.0 * (feature_importance / feature_importance.max())
+    sorted_idx = np.argsort(feature_importance)
+    pos = np.arange(sorted_idx.shape[0]) + .5
+    plt.subplot(1, 2, 2)
+    plt.barh(pos, feature_importance[sorted_idx], align='center')
+    plt.yticks(pos, np.array(feature_names)[sorted_idx])
+    plt.xlabel('Relative Importance')
+    plt.title('Variable Importance')
+
+    plt.savefig('featureimportance.svg', format='svg', dpi=400)
+    plt.show()
+
+if __main__ == "__name__":
+    X,y = feature_engineering()
+    resampled_X, resampled_y = balance_class(X,y)
+    best_model, X_train, X_test, y_train, y_test = score_best_models(resampled_X,resampled_y)
+    check_feature_importance(best_model, X_train, X_test, y_train, y_test)
+    plot_feature_importance(best_model)
+    with open('model.pkl', 'wb') as f:
+        pickle.dump(best_model, f)
