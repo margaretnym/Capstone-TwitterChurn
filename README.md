@@ -47,6 +47,11 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
 
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone.png)
 
+#### Links to the data vis
+https://s3-us-west-2.amazonaws.com/margaretgalvanize/self_firstfirstfirstfirst_tfidf.html
+https://s3-us-west-2.amazonaws.com/margaretgalvanize/self_lastlastlast_count.html
+
+
 ## Visualizing topic models with pyLDAvis
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone.png)
 
