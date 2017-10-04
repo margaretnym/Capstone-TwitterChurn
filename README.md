@@ -28,10 +28,15 @@ http://contrib.scikit-learn.org/imbalanced-learn
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/3Margaret%20-%20Capstone2nd.png)
 
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/Screen%20Shot%202017-10-04%20at%204.12.10%20PM.png)
+
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone2nd.png)
+
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone2nd.png)
+
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone2nd.png)
+
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/7Margaret%20-%20Capstone2nd.png)
+
 
 ## Model picked
 Models experiemented: Logistic Regression, Decision Trees, Gradient Boosting. 
