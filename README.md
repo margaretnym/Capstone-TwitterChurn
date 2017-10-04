@@ -1,12 +1,13 @@
 # Capstone-TwitterChurn
-
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/1Margaret%20-%20Capstone2nd.png)
 
 ## Propose
 Understanding what keeps social media users engaged is a foundation to develop retention strategies to keep users from walking out the door. This capstone project defines Twitter users who have churned, their important features, and what they said in their last tweets.
 
+### Diagram of work flow 
+
 ### Main Infrastructure
 - MongoDB
-- Flask
 - AWS - EC2
 
 ### Library Used
@@ -21,31 +22,16 @@ Understanding what keeps social media users engaged is a foundation to develop r
 http://contrib.scikit-learn.org/imbalanced-learn 
 
 
-### Diagram of work flow 
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/1Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/2Margaret%20-%20Capstone2nd.png)
 
-## Data Collection
-## Data Size
-## Sample Accounts Category
-## Power Curves
-## Way to define churn
-## Feature engineering
 
-#### Feature Picked up & its importance
-Category | Feature |Description | Feature Importance
------------- | ------------- | -------------| -------------
-body_length|                  |0.38
-have_previous_payouts||0.21
-payout_type_|NAN for payout_type|0.08
-maindomain_email|If the email domain from 'hotmail.com', 'gmail.com', or 'yahoo.com'|0.06
-Facebook_presence|            |0.05
-show_map|                     |0.05
-US/N|If the country is US or not|0.04
-Twitter_presence|             |0.04
-sensible_age|User age is within the range 15-80                 |0.03
-payout_type_CHECK|Check for payout_type             |0.02
-cap_name|If name is all in captial case                     |0.02
-payout_type_ACH|ACH for payout_type              |0.02
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/3Margaret%20-%20Capstone2nd.png)
+
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/4Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/7Margaret%20-%20Capstone2nd.png)
 
 ## Model picked
 Models experiemented: Logistic Regression, Decision Trees, Gradient Boosting. 
@@ -64,9 +50,6 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
 
 ```
 ## Visualizing topic models with pyLDAvis
-
-
-Wait, what am I looking at again?
 
 There are a lot of moving parts in the visualization. Here's a brief summary:
 
