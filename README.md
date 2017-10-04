@@ -22,7 +22,7 @@ http://contrib.scikit-learn.org/imbalanced-learn
 
 
 ### Diagram of work flow 
-![App Architecture](https://github.com/margaretnym/event-fraud-detection/blob/master/images/fraud_detection.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/1Margaret%20-%20Capstone2nd.png)
 
 ## Data Collection
 ## Data Size
