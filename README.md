@@ -19,17 +19,14 @@ Understanding what keeps social media users engaged is a foundation to develop r
 - SMOTE The raw dataset is imbalanced. Hence, the SMOTE algorithm is used to balance the datasets.
 http://contrib.scikit-learn.org/imbalanced-learn 
 
-
+### Data Collection and Data Charactistics
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/2Margaret%20-%20Capstone2nd.png)
 
-
+### Define Churn
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/3Margaret%20-%20Capstone.png)
 
+### Feature Engineering
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/Screen%20Shot%202017-10-04%20at%204.12.10%20PM.png)
-
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone.png)
-
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone.png)
 
 ## Model picked
 Models experiemented: Logistic Regression, Decision Trees, Gradient Boosting. 
@@ -48,9 +45,12 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
 
 ```
 
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone.png)
 
 ## Visualizing topic models with pyLDAvis
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone.png)
+
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone.png)
 
 There are a lot of moving parts in the visualization. Here's a brief summary:
 
