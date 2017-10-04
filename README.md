@@ -1,6 +1,4 @@
-## Capstone-TwitterChurn
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/1Margaret%20-%20Capstone2nd.png)
-
 ## Propose
 Understanding what keeps social media users engaged is a foundation to develop retention strategies to keep users from walking out the door. This capstone project defines Twitter users who have churned, their important features, and what they said in their last tweets.
 
@@ -25,18 +23,13 @@ http://contrib.scikit-learn.org/imbalanced-learn
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/2Margaret%20-%20Capstone2nd.png)
 
 
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/3Margaret%20-%20Capstone2nd.png)
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/3Margaret%20-%20Capstone.png)
 
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/Screen%20Shot%202017-10-04%20at%204.12.10%20PM.png)
 
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/5Margaret%20-%20Capstone.png)
 
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6Margaret%20-%20Capstone.png)
-
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone.png)
-
-![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/8Margaret%20-%20Capstone.png)
-
 
 ## Model picked
 Models experiemented: Logistic Regression, Decision Trees, Gradient Boosting. 
@@ -54,6 +47,9 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
               warm_start=False)
 
 ```
+
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/6.5Margaret%20-%20Capstone.png)
+
 ## Visualizing topic models with pyLDAvis
 
 There are a lot of moving parts in the visualization. Here's a brief summary:
@@ -94,4 +90,9 @@ The y-axis separates two large groups of topics — let's call them "super-topic
     The super-topic in the upper-right tends to be about other elements of the restaurant experience. It groups together the ambience & seating, location & time, family, and customer service topics, among others.
 
 So, in addition to the 50 direct topics the model has learned, our analysis suggests a higher-level pattern in the data. Restaurant reviewers in the Yelp dataset talk about two main things in their reviews, in general: (1) the food, and (2) their overall restaurant experience. For this dataset, this is a very intuitive result, and we probably didn't need a sophisticated modeling technique to tell it to us. When working with datasets from other domains, though, such high-level patterns may be much less obvious from the outset — and that's where topic modeling can help.
+
+
+
+![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/8Margaret%20-%20Capstone.png)
+
 
