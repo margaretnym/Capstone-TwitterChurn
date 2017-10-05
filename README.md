@@ -4,6 +4,14 @@ Understanding what keeps social media users engaged is a foundation to develop r
 
 ### Diagram of work flow 
 
+- boxplot.py 	|EDA Draw Boxplots |Plot Box plot to show the power curve	
+1. find_existence_.py 	|Randomize User ID and check if there is a valid user.
+2. get_tweets_history_screen_name.py |Extract User Tweets
+3. getting_the_delta.py |Construct three measures the mean of delta t, max delta t, and time interval between last tweet and the day of analyss
+4. feature_engineering.py |Feature engineering and model training
+5. pyLDAvis.py |LDA data visualization	
+	
+
 ### Main Infrastructure
 - MongoDB
 - AWS - EC2
@@ -12,12 +20,12 @@ Understanding what keeps social media users engaged is a foundation to develop r
 - Numpy
 - Pandas
 - Sklearn
-- Jinja
-- cPickle
-- pymongo
-- flask
-- SMOTE The raw dataset is imbalanced. Hence, the SMOTE algorithm is used to balance the datasets.
-http://contrib.scikit-learn.org/imbalanced-learn 
+- pyLDAvis
+- seaborn
+- tweepy
+- csv
+- SMOTE (The raw dataset is imbalanced. Hence, the SMOTE algorithm is used to balance the datasets.
+http://contrib.scikit-learn.org/imbalanced-learn)
 
 ### Data Collection and Data Charactistics
 ![App Architecture](https://github.com/margaretnym/Capstone-TwitterChurn/blob/master/ppt/2Margaret%20-%20Capstone2nd.png)
