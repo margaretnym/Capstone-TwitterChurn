@@ -51,8 +51,19 @@ GradientBoostingClassifier(criterion='friedman_mse', init=None,
 
 ## Visualizing topic models with pyLDAvis
 
+LDA + TfidfVectorizer
+```python
+LatentDirichletAllocation(batch_size=128, doc_topic_prior=None,
+             evaluate_every=-1, learning_decay=0.7, learning_method=None,
+             learning_offset=10.0, max_doc_update_iter=100, max_iter=10,
+             mean_change_tol=0.001, n_components=10, n_jobs=1, n_topics=8,
+             perp_tol=0.1, random_state=0, topic_word_prior=None,
+             total_samples=1000000.0, verbose=0)
+```
+
 #### Links to the data vis
 https://s3-us-west-2.amazonaws.com/margaretgalvanize/self_firstfirstfirstfirst_tfidf.html
+
 https://s3-us-west-2.amazonaws.com/margaretgalvanize/self_lastlastlast_count.html
 
 
