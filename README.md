@@ -95,7 +95,6 @@ On the right, there is a bar chart showing top terms.
 - Rolling the mouse over a term in the bar chart on the right will cause the topic circles to resize in the plot on the left, to show the strength of the relationship between the topics and the selected term.
 
 
-
 Analyzing our LDA model
 
 The interactive visualization pyLDAvis produces is helpful for both:
