@@ -3,7 +3,7 @@
 Understanding what keeps social media users engaged is a foundation to develop retention strategies to keep users from walking out the door. This capstone project defines Twitter users who have churned, their important features, and what they said in their last tweets.
 
 ### Diagram of work flow 
---------------|--------------------------
+--------------|-------------------------
 - boxplot.py 	|EDA Draw Boxplots |Plot Box plot to show the power curve	
 1. find_existence_.py 	|Randomize User ID and check if there is a valid user.
 2. get_tweets_history_screen_name.py |Extract User Tweets
