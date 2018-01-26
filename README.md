@@ -15,7 +15,6 @@ Understanding what keeps social media users engaged is a foundation to develop r
 ### Main Infrastructure
 - MongoDB
 - AWS - EC2
-
 ### Library Used
 - Numpy
 - Pandas
